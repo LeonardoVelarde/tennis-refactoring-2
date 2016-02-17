@@ -29,7 +29,6 @@ public class TennisGame2 implements TennisGame
         if(firstHasTieWithSecond(P1point, P2point)){
             return getTiedScore();
         }
-        setRegularScore();
         if(firstHasAdvantageOverSecond(P1point, P2point) || firstHasAdvantageOverSecond(P2point, P1point)){
             return getAdvantageScore();
         }
@@ -37,7 +36,7 @@ public class TennisGame2 implements TennisGame
             return getWonScore();
         }
 
-        return score;
+        return getRegularScore();
     }
 
     private String getWonScore() {
@@ -56,17 +55,12 @@ public class TennisGame2 implements TennisGame
         return p1point >= 4 && p1point - p2point == 1;
     }
 
-    private void setRegularScore() {
-        if(!firstHasTieWithSecond(P1point, P2point) && !firstHasDeuceWithSecond(P1point, P2point))
-            score = getLiteral(P1point) + "-" + getLiteral(P2point);
+    private String getRegularScore() {
+        return getLiteral(P1point) + "-" + getLiteral(P2point);
     }
 
     private String getTiedScore() {
         return (P1point > 2 ? "Deuce" : getLiteral(P1point) + "-All");
-    }
-
-    private static boolean firstHasDeuceWithSecond(int p1point, int p2point) {
-        return p1point == p2point && p1point >=3;
     }
 
     private static boolean firstHasTieWithSecond(int p1point, int p2point) {
