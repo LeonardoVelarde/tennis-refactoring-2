@@ -26,67 +26,51 @@ public class TennisGame2 implements TennisGame
     }
 
     public String getScore(){
-        setTiedScore();
+        if(firstHasTieWithSecond(P1point, P2point)){
+            return getTiedScore();
+        }
         setRegularScore();
-        setAdvantageScore();
-        setWonScore();
+        if(firstHasAdvantageOverSecond(P1point, P2point) || firstHasAdvantageOverSecond(P2point, P1point)){
+            return getAdvantageScore();
+        }
+        if(firstWonGameOverSecond(P1point, P2point) || firstWonGameOverSecond(P2point, P1point)){
+            return getWonScore();
+        }
 
         return score;
     }
 
-    private void setWonScore() {
-        if (firstWonGameOverSecond(P1point, P2point))
-        {
-            score = "Win for " + player1Name;
-        }
-        if (firstWonGameOverSecond(P2point, P1point))
-        {
-            score = "Win for " + player2Name;
-        }
+    private String getWonScore() {
+        return firstWonGameOverSecond(P1point, P2point) ? "Win for " + player1Name : "Win for " + player2Name;
     }
 
     private static boolean firstWonGameOverSecond(int p1point, int p2point) {
         return p1point >=4 && p2point >=0 && (p1point - p2point)>=2;
     }
 
-    private void setAdvantageScore() {
-        if (firstHasAdvantageOverSecond(P1point, P2point))
-        {
-            score = "Advantage " + player1Name;
-        }
-
-        if (firstHasAdvantageOverSecond(P2point, P1point))
-        {
-            score = "Advantage " + player2Name;
-        }
+    private String getAdvantageScore() {
+        return firstHasAdvantageOverSecond(P1point, P2point) ? "Advantage " + player1Name : "Advantage " + player2Name;
     }
 
     private static boolean firstHasAdvantageOverSecond(int p1point, int p2point) {
-        return p1point > p2point && p2point >= 3;
+        return p1point >= 4 && p1point - p2point == 1;
     }
 
     private void setRegularScore() {
-
-        if(!firstHasNormalTieWithSecond(P1point, P2point) && !firstHasDeuceWithSecond(P1point, P2point))
+        if(!firstHasTieWithSecond(P1point, P2point) && !firstHasDeuceWithSecond(P1point, P2point))
             score = getLiteral(P1point) + "-" + getLiteral(P2point);
     }
 
-    private void setTiedScore() {
-        if (firstHasNormalTieWithSecond(P1point, P2point))
-        {
-            score = getLiteral(P1point);
-            score += "-All";
-        }
-        if (firstHasDeuceWithSecond(P1point, P2point))
-            score = "Deuce";
+    private String getTiedScore() {
+        return (P1point > 2 ? "Deuce" : getLiteral(P1point) + "-All");
     }
 
     private static boolean firstHasDeuceWithSecond(int p1point, int p2point) {
         return p1point == p2point && p1point >=3;
     }
 
-    private static boolean firstHasNormalTieWithSecond(int p1point, int p2point) {
-        return p1point == p2point && p1point < 3;
+    private static boolean firstHasTieWithSecond(int p1point, int p2point) {
+        return p1point == p2point;
     }
 
     public void SetP1Score(int number){
