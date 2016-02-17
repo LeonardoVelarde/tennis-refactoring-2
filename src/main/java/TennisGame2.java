@@ -1,14 +1,12 @@
 
 public class TennisGame2 implements TennisGame
 {
-    public int P1point = 0;
-    public int P2point = 0;
-    
-    public String P1res = "";
-    public String P2res = "";
+    public int player1points = 0;
+    public int player2points = 0;
+
     private String player1Name;
     private String player2Name;
-    String score;
+    String[] pointLiterals = {"Love", "Fifteen", "Thirty", "Forty"};
 
     public TennisGame2(String player1Name, String player2Name) {
         this.player1Name = player1Name;
@@ -16,23 +14,17 @@ public class TennisGame2 implements TennisGame
     }
 
     private String getLiteral(int score){
-        if(score == 1)
-            return "Fifteen";
-        if(score == 2)
-            return "Thirty";
-        if(score == 3)
-            return "Forty";
-        return "Love";
+        return pointLiterals[score];
     }
 
     public String getScore(){
-        if(firstHasTieWithSecond(P1point, P2point)){
+        if(firstHasTieWithSecond(player1points, player2points)){
             return getTiedScore();
         }
-        if(firstHasAdvantageOverSecond(P1point, P2point) || firstHasAdvantageOverSecond(P2point, P1point)){
+        if(firstHasAdvantageOverSecond(player1points, player2points) || firstHasAdvantageOverSecond(player2points, player1points)){
             return getAdvantageScore();
         }
-        if(firstWonGameOverSecond(P1point, P2point) || firstWonGameOverSecond(P2point, P1point)){
+        if(firstWonGameOverSecond(player1points, player2points) || firstWonGameOverSecond(player2points, player1points)){
             return getWonScore();
         }
 
@@ -40,7 +32,7 @@ public class TennisGame2 implements TennisGame
     }
 
     private String getWonScore() {
-        return firstWonGameOverSecond(P1point, P2point) ? "Win for " + player1Name : "Win for " + player2Name;
+        return firstWonGameOverSecond(player1points, player2points) ? "Win for " + player1Name : "Win for " + player2Name;
     }
 
     private static boolean firstWonGameOverSecond(int p1point, int p2point) {
@@ -48,7 +40,7 @@ public class TennisGame2 implements TennisGame
     }
 
     private String getAdvantageScore() {
-        return firstHasAdvantageOverSecond(P1point, P2point) ? "Advantage " + player1Name : "Advantage " + player2Name;
+        return firstHasAdvantageOverSecond(player1points, player2points) ? "Advantage " + player1Name : "Advantage " + player2Name;
     }
 
     private static boolean firstHasAdvantageOverSecond(int p1point, int p2point) {
@@ -56,11 +48,11 @@ public class TennisGame2 implements TennisGame
     }
 
     private String getRegularScore() {
-        return getLiteral(P1point) + "-" + getLiteral(P2point);
+        return getLiteral(player1points) + "-" + getLiteral(player2points);
     }
 
     private String getTiedScore() {
-        return (P1point > 2 ? "Deuce" : getLiteral(P1point) + "-All");
+        return (player1points > 2 ? "Deuce" : getLiteral(player1points) + "-All");
     }
 
     private static boolean firstHasTieWithSecond(int p1point, int p2point) {
@@ -86,11 +78,11 @@ public class TennisGame2 implements TennisGame
     }
     
     public void P1Score(){
-        P1point++;
+        player1points++;
     }
     
     public void P2Score(){
-        P2point++;
+        player2points++;
     }
 
     public void wonPoint(String player) {
